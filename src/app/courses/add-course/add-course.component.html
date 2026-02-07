@@ -1,0 +1,85 @@
+<div id="myModal" class="overlay">
+  <div class="modal-content" id="modal-content">
+    <span class="close" (click)="hideCreateForm()">&times;</span>
+
+    <div class="form-container">
+      <h2>{{(!editMode? 'Create' : 'Update') + ' Course'}}</h2>
+
+      <form class="course-form" [formGroup]="courseForm" (ngSubmit)="onCreateOrUpdateCourse()">
+        <div class="form-field">
+          <label for="title">Title</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="e.g., Introduction to Web Development"
+            formControlName="title"
+          >
+        </div>
+        <div class="validation-error" *ngIf="showTitleValidationErrors()">{{ showTitleValidationErrors() }}</div>
+
+        <div class="validation-error"></div>
+
+        <div class="form-field">
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            rows="5"
+            placeholder="Provide a detailed description of the course"
+            formControlName="description"
+          ></textarea>
+        </div>
+
+        <div class="validation-error" *ngIf="showDescriptionValidationErrors()">{{ showDescriptionValidationErrors() }}</div>
+
+        <div class="validation-error"></div>
+
+        <div class="form-field">
+          <label for="author">Author</label>
+          <input
+            type="text"
+            id="author"
+            name="author"
+            placeholder="e.g., John Doe"
+            formControlName="author"
+          >
+        </div>
+
+        <div class="validation-error" *ngIf="showAuthorValidationErrors()">{{ showAuthorValidationErrors() }}</div>
+
+        <div class="validation-error"></div>
+
+        <div class="form-field">
+          <label for="price">Price</label>
+          <input
+            type="number"
+            id="price"
+            name="price"
+            step="0.01"
+            placeholder="e.g., 99.99"
+            formControlName="price"
+          >
+        </div>
+
+        <div class="form-field file-upload-field">
+          <label for="image">Course Image</label>
+          <div class="file-input-wrapper">
+            <input type="file" id="image" name="image" accept="image/*" formControlName="image">
+            <button type="button" class="browse-button">Browse File</button>
+            <span class="file-name">No file chosen</span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="submit-button">
+            {{(!editMode? 'Create' : 'Update') + ' Course'}}
+          </button>
+          <button type="reset" class="cancel-button" *ngIf="!editMode">
+            Clear Form
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

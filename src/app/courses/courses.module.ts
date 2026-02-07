@@ -1,0 +1,31 @@
+import {NgModule} from "@angular/core";
+import {RouterModule, Routes} from "@angular/router";
+import {CoursesComponent} from "./courses.component";
+import {CommonModule} from "@angular/common";
+import {CoursesCardComponent} from "./courses-card/courses-card.component";
+import {AddCourseComponent} from "./add-course/add-course.component";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {StoreModule} from "@ngrx/store";
+import {coursesReducer} from "./states/courses.reducer";
+import {COURSES_STATE} from "../constants";
+
+const routes: Routes = [
+  { path: '', component: CoursesComponent }
+]
+@NgModule({
+  declarations: [
+    CoursesComponent,
+    CoursesCardComponent,
+    AddCourseComponent
+  ],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    RouterModule.forChild(routes),
+    FormsModule,
+    StoreModule.forFeature(COURSES_STATE, coursesReducer)
+  ],
+  exports: [
+  ]
+})
+export class CoursesModule {}

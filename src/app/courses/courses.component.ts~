@@ -1,0 +1,34 @@
+import {Component, OnInit} from '@angular/core';
+import {Store} from "@ngrx/store";
+import {Observable} from "rxjs";
+import {Course} from "../models/course.model";
+import {AppState} from "../store/app.state";
+import {getCourses, getShowForm} from "./states/courses.selector";
+import {setEditMode, showForm} from "./states/courses.actions";
+
+@Component({
+  selector: 'app-courses',
+  templateUrl: './courses.component.html',
+  styleUrls: ['./courses.component.css']
+})
+export class CoursesComponent implements OnInit{
+
+  constructor(
+    private store: Store<AppState>
+  ) {}
+
+  courses$: Observable<Course[]> | null = null;
+  showForm$: Observable<boolean> | null = null;
+
+  ngOnInit(): void {
+    this.courses$ = this.store.select(getCourses);
+    this.showForm$ = this.store.select(getShowForm);
+  }
+
+  showCreateCourse() {
+    this.store.dispatch(sh);
+    this.store.dispatch(setEditMode({editMode: false}));
+    this.store.dispatch(showForm({value: true}));
+  }
+
+}
