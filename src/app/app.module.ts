@@ -14,6 +14,9 @@ import {appReducer} from "./store/app.state";
 import { LoaderComponent } from './loader/loader.component';
 import { ToasterComponent } from './toaster/toaster.component';
 import {AuthEffects} from "./auth/states/auth.effects";
+import {AngularFireModule} from "@angular/fire/compat";
+import {AngularFireStorageModule} from "@angular/fire/compat/storage";
+import {environments} from "./environments/environment";
 
 @NgModule({
   declarations: [
@@ -30,6 +33,8 @@ import {AuthEffects} from "./auth/states/auth.effects";
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    AngularFireModule.initializeApp(environments.firebaseConfig),
+    AngularFireStorageModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     EffectsModule.forRoot([AuthEffects])
   ],

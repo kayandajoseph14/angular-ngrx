@@ -1,12 +1,12 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {FIRE_BASE_API_KEY} from "../../constants";
 import {User} from "../../models/user.model";
 import {AuthResponse} from "../../models/auth-response.model";
 import {Observable} from "rxjs";
 import {AppState} from "../../store/app.state";
 import {Store} from "@ngrx/store";
 import {logout} from "../states/auth.action";
+import {environments} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class AuthService {
   private logoutTimer: any;
 
   login(email: string, password: string): Observable<AuthResponse> {
-    const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIRE_BASE_API_KEY}`;
+    const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environments.firebaseConfig.apiKey}`;
     const body = {
       email,
       password,
@@ -31,7 +31,7 @@ export class AuthService {
   }
 
   signup(email: string, password: string): Observable<AuthResponse> {
-    const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIRE_BASE_API_KEY}`;
+    const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environments.firebaseConfig.apiKey}`;
     const body = {
       email,
       password,
