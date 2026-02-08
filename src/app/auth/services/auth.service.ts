@@ -4,15 +4,20 @@ import {FIRE_BASE_API_KEY} from "../../constants";
 import {User} from "../../models/user.model";
 import {AuthResponse} from "../../models/auth-response.model";
 import {Observable} from "rxjs";
+import {AppState} from "../../store/app.state";
+import {Store} from "@ngrx/store";
+import {logout} from "../states/auth.action";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private store: Store<AppState>
   ) {}
 
+  private logoutTimer: any;
 
   login(email: string, password: string): Observable<AuthResponse> {
     const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIRE_BASE_API_KEY}`;
@@ -79,6 +84,7 @@ export class AuthService {
   saveUserInLocalStorage(user: User){
     try {
       localStorage.setItem('user', JSON.stringify(user));
+      this.autoLogout(user);
     }
     catch (error) {
       console.log("Failed to save user in localstorage", error)
@@ -110,5 +116,14 @@ export class AuthService {
 
   logout(){
     localStorage.removeItem('user');
+    clearTimeout(this.logoutTimer);
+    this.logoutTimer = null;
+  }
+
+  autoLogout(user: User){
+    const interval = user.expiresAt - Date.now();
+    this.logoutTimer = setTimeout(() => {
+      this.store.dispatch(logout())
+    }, interval);
   }
 }

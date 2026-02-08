@@ -26,7 +26,7 @@ export class AuthEffects{
             this.store.dispatch(setIsLoading({value: false}))
             const loggedUser = this.authService.formatUserData(data);
             this.authService.saveUserInLocalStorage(loggedUser);
-            return loginSuccess({user: loggedUser})
+            return loginSuccess({user: loggedUser, redirect: true})
           }),
 
           catchError((errorResponse) => {
@@ -50,7 +50,7 @@ export class AuthEffects{
             this.store.dispatch(setIsLoading({value: false}))
             const signedUpUser = this.authService.formatUserData(data);
             this.authService.saveUserInLocalStorage(signedUpUser);
-            return signupSuccess({user: signedUpUser})
+            return signupSuccess({user: signedUpUser, redirect: true})
           }),
 
           catchError((errorResponse) => {
@@ -68,7 +68,9 @@ export class AuthEffects{
     return this.actions$.pipe(
       ofType(loginSuccess, signupSuccess),
       tap(action => {
-        this.router.navigate(['/'])
+        if(action.redirect){
+          this.router.navigate(['/'])
+        }
       })
     )
   }, {dispatch: false})
@@ -79,7 +81,7 @@ export class AuthEffects{
       mergeMap((action) => {
         const user = this.authService.readUserFromLocalStorage();
         if(user){
-          return of(loginSuccess({user : user}))
+          return of(loginSuccess({user : user, redirect: false}))
         }
         return EMPTY;
       })
@@ -96,8 +98,5 @@ export class AuthEffects{
       })
     )
   }, {dispatch: false})
-
-
-
 
 }
